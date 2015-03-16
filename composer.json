@@ -1,13 +1,13 @@
 {
-    "name": "mvanduijker/joomla-cli",
+    "name": "picturae/joomla-cli",
     "type": "project",
     "description": "Command-line script to manage joomla sites",
     "keywords": ["joomla", "cli", "tools"],
-    "homepage": "https://github.com/mvanduijker/joomla-cli",
+    "homepage": "https://github.com/picturae/joomla-cli",
     "authors": [
         {
-            "name": "Mark van Duijker",
-            "email": "mark@duyker.nl"
+            "name": "Picturae",
+            "email": "contact@picturae.pro"
         }
     ],
     "require": {
