@@ -80,15 +80,15 @@ class Versions
 
         $versions = $this->getVersions();
 
-        // first check on exact matches if we don't want a stable version
-        if (!$this->stable && array_key_exists($version, $versions['heads'])) {
+        // first check on exact matches
+        if (array_key_exists($version, $versions['heads'])) {
             return [$version => $versions['heads'][$version]];
         }
 
         // remove none stable (e.g. 3.4.1-rc) tags
         if($this->stable) {
             $versionCleanup = array_filter(array_flip($versions['tags']), function($val){
-                $pattern  = '/^(?:(\d+)\.)?(?:(\d+)\.)?(\*|\d+)$/';
+                $pattern  = '/^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-([0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*))?(?:\+([0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*))?$/';
                 return preg_match($pattern, $val);
             });
             $versionCleanup = array_flip($versionCleanup);
@@ -164,7 +164,7 @@ class Versions
      */
     public function isTag($version)
     {
-        if (!$this->stable && array_key_exists($version, $this->getVersions()['heads'])) {
+        if (array_key_exists($version, $this->getVersions()['heads'])) {
             return false;
         } elseif (array_key_exists($version, $this->getVersions()['tags'])) {
             return true;

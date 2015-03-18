@@ -50,12 +50,12 @@ class VersionsTest extends \PHPUnit_Framework_TestCase
                         'master' => 'http://test',
                     ],
                     'tags' => [
-                        '1.0.0' => 'http://test',
-                        '1.0.1' => 'http://test',
-                        '1.0.2' => 'http://test.test',
-                        '1.1.0' => 'http://test',
-                        '1.1.1' => 'http://test',
-                        '1.1.2' => 'http://test',
+                        '1.0.0' => 'http://test/1.0.0',
+                        '1.0.1' => 'http://test/1.0.1',
+                        '1.0.2' => 'http://test/1.0.2',
+                        '1.1.0' => 'http://test/1.1.0',
+                        '1.1.1' => 'http://test/1.1.1',
+                        '1.1.2' => 'http://test/1.1.2',
                     ]
                 ]
             )
@@ -63,11 +63,11 @@ class VersionsTest extends \PHPUnit_Framework_TestCase
 
         $model = new Versions($this->cacheFile);
 
-        $this->assertEquals('1.1.2', array_keys($model->getVersion('1.1.*'))[0]);
-        $this->assertEquals('1.1.2', array_keys($model->getVersion('1.*'))[0]);
-        $this->assertEquals('1.0.0', array_keys($model->getVersion('1.0.0'))[0]);
-        $this->assertEquals('master', array_keys($model->getVersion('master'))[0]);
-        $this->assertEquals('http://test.test', array_values($model->getVersion('1.0.2'))[0]);
+        $this->assertEquals('1.1.2', array_keys($model->getVersion('1.1.*', true))[0]);
+        $this->assertEquals('1.1.2', array_keys($model->getVersion('1.*', true))[0]);
+        $this->assertEquals('1.0.0', array_keys($model->getVersion('1.0.0', true))[0]);
+        $this->assertEquals('master', array_keys($model->getVersion('master', false))[0]);
+        $this->assertEquals('http://test/1.0.2', array_values($model->getVersion('1.0.2', true))[0]);
 
     }
 
