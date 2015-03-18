@@ -7,3 +7,8 @@ Joomla cli
 [![Code Climate](https://codeclimate.com/github/picturae/joomla-cli/badges/gpa.svg)](https://codeclimate.com/github/picturae/joomla-cli)
 
 Joomla-cli is a commandline tool to manage your Joomla websites. This is still very alpha and in heavy development!
+
+
+## Thanks to…
+
+* [Mark van Duijker](https://github.com/mvanduijker) for starting this tool!
