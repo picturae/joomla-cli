@@ -83,6 +83,13 @@ class DownloadCommand extends Command
                 null,
                 InputOption::VALUE_NONE,
                 'Keep the installation folder after download'
+            )
+            ->addOption(
+                'stable',
+                null,
+                InputOption::VALUE_OPTIONAL,
+                'Stability',
+                'true'
             );
     }
 
@@ -98,7 +105,7 @@ class DownloadCommand extends Command
     {
 
         $this->target = $input->getOption('path');
-        $this->version = $this->versionsModel->getVersion($input->getOption('joomla-version'));
+        $this->version = $this->versionsModel->getVersion($input->getOption('joomla-version'), filter_var($input->getOption('stable'), FILTER_VALIDATE_BOOLEAN));
         $this->keepInstallationFolder = $input->getOption('keep-installation-folder');
 
         $this->check();

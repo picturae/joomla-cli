@@ -40,6 +40,11 @@ class Versions
     protected $versions = null;
 
     /**
+     * @var bool
+     */
+    protected $stable = true;
+
+    /**
      * Constructor
      *
      * @param null $cachePatch path to cache file
@@ -58,22 +63,36 @@ class Versions
      * For example 3.3.* will find the latest 3.3 release
      *
      * @param string $version strict name or part of version with .*
+     * @param bool $stable boolean to set the stability
      *
      * @throws \InvalidArgumentException
      *
      * @return array|null
      */
-    public function getVersion($version)
+    public function getVersion($version, $stable)
     {
         if (!is_string($version)) {
             throw new \InvalidArgumentException('Unexpected value, string expected!');
         }
 
+        // set stability in case we want to install RC or beta versions
+        $this->setStability($stable);
+
         $versions = $this->getVersions();
 
-        // first check on exact matches
-        if (array_key_exists($version, $versions['heads'])) {
+        // first check on exact matches if we don't want a stable version
+        if (!$this->stable && array_key_exists($version, $versions['heads'])) {
             return [$version => $versions['heads'][$version]];
+        }
+
+        // remove none stable (e.g. 3.4.1-rc) tags
+        if($this->stable) {
+            $versionCleanup = array_filter(array_flip($versions['tags']), function($val){
+                $pattern  = '/^(?:(\d+)\.)?(?:(\d+)\.)?(\*|\d+)$/';
+                return preg_match($pattern, $val);
+            });
+            $versionCleanup = array_flip($versionCleanup);
+            $versions['tags'] = $versionCleanup;
         }
 
         if (array_key_exists($version, $versions['tags'])) {
@@ -145,7 +164,7 @@ class Versions
      */
     public function isTag($version)
     {
-        if (array_key_exists($version, $this->getVersions()['heads'])) {
+        if (!$this->stable && array_key_exists($version, $this->getVersions()['heads'])) {
             return false;
         } elseif (array_key_exists($version, $this->getVersions()['tags'])) {
             return true;
@@ -201,7 +220,6 @@ class Versions
     protected function retrieveVersionsFromCache()
     {
         // check if file exists and is new enough
-
         if ($this->cachePath && file_exists($this->cachePath)) {
             if (filemtime($this->cachePath) < (time() - $this->cacheExpire)) {
                 unlink($this->cachePath);
@@ -265,5 +283,17 @@ class Versions
     public function getJoomlaRepository()
     {
         return $this->joomlaRepository;
+    }
+
+    /**
+     * Set Joomla stability
+     *
+     * @var bool
+     *
+     * @return void
+     */
+    public function setStability($stable)
+    {
+        $this->stable = $stable;
     }
 }
