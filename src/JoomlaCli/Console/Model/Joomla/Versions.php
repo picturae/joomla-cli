@@ -88,7 +88,7 @@ class Versions
         // remove none stable (e.g. 3.4.1-rc) tags
         if($this->stable) {
             $versionCleanup = array_filter(array_flip($versions['tags']), function($val){
-                $pattern  = '/^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-([0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*))?(?:\+([0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*))?$/';
+                $pattern  = '/^(?:(\d+)\.)?(?:(\d+)\.)?(\*|\d+)$/';
                 return preg_match($pattern, $val);
             });
             $versionCleanup = array_flip($versionCleanup);
