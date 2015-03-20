@@ -50,3 +50,7 @@ vendor/bin/joomla-cli extension:language:install nl-NL --path=./public
 ```
 
 This command uses the path to bootstrap the Joomla application and install the language.
+
+## Thanks to…
+
+* [Mark van Duijker](https://github.com/mvanduijker) for starting this tool!
