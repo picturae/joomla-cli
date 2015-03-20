@@ -8,7 +8,7 @@ Joomla cli
 
 Joomla-cli is a commandline tool to manage your Joomla websites.
 
-For intance in our development / production environment we've build a Phing wrapper around it to deploy and install our Joomla! websites.
+For intance in our development / production environment we've build a [Phing](https://www.phing.info/) wrapper around it to deploy and install our Joomla! websites.
 
 ## Install Joomla
 
@@ -38,7 +38,7 @@ Other options:
 ## Database updates
 
 ``` bash
-vendor/bin/joomla-cli core:update-db --path=${deploy.target}
+vendor/bin/joomla-cli core:update-db --path=./public
 ```
 
 This command uses the path to bootstrap the Joomla application and run the database migrations (if they are needed).
