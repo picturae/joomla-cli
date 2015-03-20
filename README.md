@@ -6,4 +6,47 @@ Joomla cli
 [![Dependency Status](https://www.versioneye.com/user/projects/5506a33666e561635300011e/badge.svg?style=flat)](https://www.versioneye.com/user/projects/5506a33666e561635300011e)
 [![Code Climate](https://codeclimate.com/github/picturae/joomla-cli/badges/gpa.svg)](https://codeclimate.com/github/picturae/joomla-cli)
 
-Joomla-cli is a commandline tool to manage your Joomla websites. This is still very alpha and in heavy development!
+Joomla-cli is a commandline tool to manage your Joomla websites.
+
+For intance in our development / production environment we've build a Phing wrapper around it to deploy and install our Joomla! websites.
+
+## Install Joomla
+
+``` bash
+vendor/bin/joomla-cli core:download --path=./public
+```
+
+--path defaults to joomla, can be whatever relative to the directory the command is executed.
+
+--version defaults to latest stable e.g. 3.4.0, supports 3.3.* or exact version number.
+
+With the --stable flag you can also install unstable versions e.g. 3.4.1-rc
+
+## Install DB
+
+``` bash
+vendor/bin/joomla-cli core:install-db  --dbname="mydb" --dbuser="myuser" --dbpass="mypassword" --dbhost="localhost" --joomla-version="3.4.0"
+```
+
+This command is used to install the initial clean Joomla! database.
+
+Other options:
+
+--dbprefix to set the prefix for the Joomla! tables.
+
+
+## Database updates
+
+``` bash
+vendor/bin/joomla-cli core:update-db --path=${deploy.target}
+```
+
+This command uses the path to bootstrap the Joomla application and run the database migrations (if they are needed).
+
+## Install languages
+
+``` bash
+vendor/bin/joomla-cli extension:language:install nl-NL --path=./public
+```
+
+This command uses the path to bootstrap the Joomla application and install the language.
