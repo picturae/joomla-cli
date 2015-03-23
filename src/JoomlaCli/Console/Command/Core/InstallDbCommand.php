@@ -134,6 +134,13 @@ class InstallDbCommand extends Command
                 InputOption::VALUE_REQUIRED,
                 'Joomla version',
                 '3.*'
+            )
+            ->addOption(
+                'stable',
+                null,
+                InputOption::VALUE_OPTIONAL,
+                'Stability',
+                'true'
             );
     }
 
@@ -148,7 +155,7 @@ class InstallDbCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
 
-        $this->version = $this->versionsModel->getVersion($input->getOption('joomla-version'));
+        $this->version = $this->versionsModel->getVersion($input->getOption('joomla-version'), filter_var($input->getOption('stable'), FILTER_VALIDATE_BOOLEAN));
         $this->dbname = $input->getOption('dbname');
         $this->dbuser = $input->getOption('dbuser');
         $this->dbpassword = $input->getOption('dbpass');
