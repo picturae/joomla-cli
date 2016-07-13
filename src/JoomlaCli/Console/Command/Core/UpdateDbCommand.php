@@ -93,6 +93,27 @@ class UpdateDbCommand extends Command
         /* @var $model \InstallerModelDatabase */
         $model = \JModelLegacy::getInstance('Database', 'InstallerModel');
         $model->fix();
+
+        // Load the update component's model to run the cleanup methods
+        \JModelLegacy::addIncludePath($joomlaApp->getPath() . '/administrator/components/com_joomlaupdate/models', 'JoomlaupdateModel');
+
+        /** @var JoomlaupdateModelDefault $model */
+        $model = \JModelLegacy::getInstance('default', 'JoomlaupdateModel');
+
+        // Make sure we got the model
+        if (!($model instanceof \JoomlaupdateModelDefault)) {
+        	echo 'Could not load update component model, please check the logs for additional details.' . PHP_EOL;
+        	exit(1);
+        }
+
+        // Finalize the update
+        if ($model->finaliseUpgrade() === false) {
+        	echo 'Failed to finalize the upgrade, please check the logs for additional details.' . PHP_EOL;
+        	exit(1);
+        }
+
+        // Cleanup after the update
+        $model->cleanUp();
     }
 
 
