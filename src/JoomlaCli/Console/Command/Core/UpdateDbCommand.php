@@ -89,11 +89,6 @@ class UpdateDbCommand extends Command
     {
         $joomlaApp = Bootstrapper::getApplication($input->getOption('path'));
 
-        \JModelLegacy::addIncludePath($joomlaApp->getPath() . '/administrator/components/com_installer/models', 'InstallerModel');
-        /* @var $model \InstallerModelDatabase */
-        $model = \JModelLegacy::getInstance('Database', 'InstallerModel');
-        $model->fix();
-
         // Load the update component's model to run the cleanup methods
         \JModelLegacy::addIncludePath($joomlaApp->getPath() . '/administrator/components/com_joomlaupdate/models', 'JoomlaupdateModel');
 
@@ -114,6 +109,11 @@ class UpdateDbCommand extends Command
 
         // Cleanup after the update
         $model->cleanUp();
+
+        \JModelLegacy::addIncludePath($joomlaApp->getPath() . '/administrator/components/com_installer/models', 'InstallerModel');
+        /* @var $model \InstallerModelDatabase */
+        $model = \JModelLegacy::getInstance('Database', 'InstallerModel');
+        $model->fix();
     }
 
 
