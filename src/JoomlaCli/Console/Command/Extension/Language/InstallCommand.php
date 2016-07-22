@@ -108,20 +108,13 @@ class InstallCommand extends Command
         foreach ($items as $item) {
             if ($item->type !== 'language') continue;
             if (strtoupper($item->element) === strtoupper($lang)) {
-
-                // check if language is installed on disk, if not installed remove from database and reinstall
-                if (file_exists($joomlaApp->getPath() . '/language/' . $item->element)) {
-                    $output->writeln('<info>Language ' . $item->element . ' already installed.');
-                    return;
-                } else {
-                    // language in database but not on disk, lets cleanup database first so we can install
-                    $db = \JFactory::getDbo();
-                    $db->setQuery('DELETE FROM #__extensions WHERE type=' . $db->quote('language') . ' AND element=' . $db->quote($item->element));
-                    $db->query();
-                    $db->setQuery('DELETE FROM #__extensions WHERE type=' . $db->quote('package') . ' AND element=' . $db->quote('pkg_' . $item->element));
-                    $db->query();
-                    break;
-                }
+              // language in database but not on disk, lets cleanup database first so we can install
+              $db = \JFactory::getDbo();
+              $db->setQuery('DELETE FROM #__extensions WHERE type=' . $db->quote('language') . ' AND element=' . $db->quote($item->element));
+              $db->query();
+              $db->setQuery('DELETE FROM #__extensions WHERE type=' . $db->quote('package') . ' AND element=' . $db->quote('pkg_' . $item->element));
+              $db->query();
+              break;
             }
         }
 
