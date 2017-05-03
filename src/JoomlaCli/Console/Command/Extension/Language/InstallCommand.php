@@ -102,8 +102,8 @@ class InstallCommand extends Command
         // check if language already installed
         \JModelLegacy::addIncludePath($joomlaApp->getPath() . '/administrator/components/com_installer/models', 'InstallerModel');
         /* @var $model \InstallerModelManage */
-        $model = \JModelLegacy::getInstance('Manage', 'InstallerModel');
-        $items = $model->getItems();
+        $manageModel = \JModelLegacy::getInstance('Manage', 'InstallerModel');
+        $items = $manageModel->getItems();
 
         foreach ($items as $item) {
             if ($item->type !== 'language') continue;
@@ -118,22 +118,30 @@ class InstallCommand extends Command
             }
         }
 
-        \JModelLegacy::addIncludePath($joomlaApp->getPath() . '/administrator/components/com_installer/models', 'InstallerModel');
         /* @var $model \InstallerModelLanguages */
-        $model = \JModelLegacy::getInstance('Languages', 'InstallerModel');
-        $model->findLanguages();
-        $items = $model->getItems();
-        $table = \JTable::getInstance('update');
+        $languageModel = \JModelLegacy::getInstance('Languages', 'InstallerModel');
+        $items = $languageModel->getItems();
+
+        jimport('joomla.updater.update');
+        $update = new \JUpdate;
+        $config = \JFactory::getConfig();
+        $tmp_dest = $config->get('tmp_path');
 
         foreach ($items as $item) {
-
-            $table->load($item->update_id);
-            $key = preg_replace('/^pkg_/i', '', $table->element);
+            $key = preg_replace('/^pkg_/i', '', $item->element);
 
             if (strtoupper($key) === strtoupper($lang)) {
-
                 $output->writeln('<info>Installing language '. $lang .'</info>');
-                $model->install([$item->update_id]);
+                $update->loadFromXml($item->detailsurl);
+                $package_url = trim($update->get('downloadurl', false)->_data);
+                $p_file = \JInstallerHelper::downloadPackage($package_url);
+                $package = \JInstallerHelper::unpack($tmp_dest . '/' . $p_file, true);
+                $installer = \JInstaller::getInstance();
+                $installer->setPath('source', $package['dir']);
+                $installer->install($package['dir']);
+
+                \JInstallerHelper::cleanupInstall($package['packagefile'], $package['extractdir']);
+
                 return;
             }
         }
