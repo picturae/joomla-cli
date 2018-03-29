@@ -93,7 +93,7 @@ class Download
         // unpack
         $cachePathEscaped = escapeshellarg($cachedRelease);
         $targetEscaped    = escapeshellarg($target);
-        `cd $targetEscaped; tar xzf $cachePathEscaped --strip 1`;
+        `cd $targetEscaped; tar xzf $cachePathEscaped`;
 
         if (!$cacheDownload) {
             unlink($cachedRelease);
