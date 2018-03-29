@@ -22,7 +22,7 @@ class Versions
     /**
      * @var string
      */
-    protected $joomlaArchiveBaseUrl = 'https://github.com/joomla/joomla-cms/archive';
+    protected $joomlaArchiveBaseUrl = 'https://github.com/joomla/joomla-cms/releases/download/';
 
     /**
      * @var string
@@ -195,11 +195,11 @@ class Versions
                             continue;
                         }
                     }
-
+                    
                     if ($matches[1] == 'heads') {
                         $tarBall = $this->joomlaTarballBaseUrl . '/' . $matches[2];
                     } else {
-                        $tarBall = $this->joomlaArchiveBaseUrl . '/' . $matches[2] . '.tar.gz';
+                        $tarBall = $this->joomlaArchiveBaseUrl . $matches[2] . '/Joomla_' . $matches[2] . '-Stable-Full_Package.tar.gz';
                     }
 
                     $versions[$matches[1]][$matches[2]] = $tarBall;
