@@ -19,15 +19,15 @@ class DownloadTest extends \PHPUnit_Framework_TestCase
     /**
      * @var string
      */
-    protected $downloadPath = 'https://github.com/joomla/joomla-cms/archive/refs/tags/3.3.3.tar.gz';
+    protected $downloadPath = 'https://github.com/joomla/joomla-cms/releases/download/3.8.10/Joomla_3.8.10-Stable-Full_Package.tar.gz';
 
 
     public function testDownloadCached()
     {
         $download = new Download($this->cachePath);
-        $download->download($this->downloadPath, '3.3.3', $this->target);
+        $download->download($this->downloadPath, '3.8.10', $this->target);
 
-        $this->assertEquals(true, file_exists($this->cachePath . '/3.3.3'));
+        $this->assertEquals(true, file_exists($this->cachePath . '/3.8.10'));
         $this->assertEquals(true, file_exists($this->target . '/includes'));
         $this->assertEquals(true, is_dir($this->target . '/includes'));
 
@@ -36,9 +36,9 @@ class DownloadTest extends \PHPUnit_Framework_TestCase
     public function testDownloadUncached()
     {
         $download = new Download($this->cachePath);
-        $download->download($this->downloadPath, '3.3.3', $this->target, false);
+        $download->download($this->downloadPath, '3.8.10', $this->target, false);
 
-        $this->assertEquals(false, file_exists($this->cachePath . '/3.3.3'));
+        $this->assertEquals(false, file_exists($this->cachePath . '/3.8.10'));
         $this->assertEquals(true, file_exists($this->target . '/includes'));
         $this->assertEquals(true, is_dir($this->target . '/includes'));
     }
@@ -47,10 +47,6 @@ class DownloadTest extends \PHPUnit_Framework_TestCase
     {
         $this->cachePath = sys_get_temp_dir() . '/joomla-cli-download-test-cache';
         $this->target = sys_get_temp_dir() . '/joomla-cli-download-test-target';
-
-        // we override the download path with a local test package to speed up testing a lot and removing dependencies
-        // to external services.
-        $this->downloadPath = realpath(__DIR__ . '/../../../../../resources/joomla-minimal-test-package.tar.gz');
     }
 
     protected function tearDown()
