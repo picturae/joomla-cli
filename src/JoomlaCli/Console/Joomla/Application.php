@@ -25,6 +25,15 @@ class Application extends JApplicationCli
     protected $_messageQueue = array();
     protected $_options      = array();
 
+		/**
+		 * The client identifier.
+		 *
+		 * @var    integer
+		 * @since  1.5
+		 * @deprecated  3.2
+		 */
+		protected $_clientId = null;
+
     /**
      * Class constructor.
      *
@@ -239,6 +248,19 @@ class Application extends JApplicationCli
         return 'cli';
     }
 
+		/**
+		 * Gets the client id of the current running application.
+		 *
+		 * @return  integer  A client identifier.
+		 *
+		 * @since   1.5
+		 * @deprecated  3.2
+		 */
+		public function getClientId()
+		{
+			return $this->_clientId;
+		}
+
     /**
      * Checks if interface is site or not.
      *
@@ -451,15 +473,15 @@ class Application extends JApplicationCli
 
         return $new_state;
     }
-    
+
     /**
      * Just a stub to catch anything that calls $app->redirect(), expecting us to be JApplication,
      * rather than JApplicationCLI, such as installer code run via extension:install, so it doesn't
      * drop dead from a fatal PHP error.
-     * 
+     *
      * @param   string   $url    does nothing
      * @param   boolean  $moved  does nothing
-     * 
+     *
      * @return  void
      */
     public function redirect($url, $moved = false)
@@ -472,5 +494,5 @@ class Application extends JApplicationCli
 		 */
     	throw new \RuntimeException(sprintf('Application tried to redirect to %s', $url));
     }
-    
+
 }
