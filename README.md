@@ -7,7 +7,7 @@ Joomla cli
 
 Joomla-cli is a commandline tool to manage your Joomla websites.
 
-For intance in our development / production environment we've build a [Phing](https://www.phing.info/) wrapper around it to deploy and install our Joomla! websites.
+For instance in our development / production environment we've build a [Phing](https://www.phing.info/) wrapper around it to deploy and install our Joomla! websites.
 
 ## Install Joomla
 
